@@ -3,7 +3,7 @@
 #   .dotenv-cloud/providers/aws/manifest.toml
 #   .dotenv-cloud/providers/aws/dotenv-cloud-provider-aws
 name = "dotenv-cloud-provider-aws"
-version = "0.1.0"
+version = "0.1.0-beta.1"
 protocol_version = "1"
 executable = "dotenv-cloud-provider-aws"
 schemes = ["aws-sm", "aws-ssm"]

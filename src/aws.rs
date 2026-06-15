@@ -7,16 +7,12 @@ use aws_config::{BehaviorVersion, Region};
 use aws_smithy_types::timeout::TimeoutConfig;
 use base64::Engine;
 
-use crate::config::AwsConfig;
-use crate::error::{map_sdk_error, ErrorClass, ProviderError};
-use crate::payload::{parse_bool, secret_manager_id, select_field, ssm_parameter_name};
-use crate::protocol::Reference;
+use dotenv_cloud_protocol::{ErrorClass, Reference};
+use dotenv_cloud_provider_sdk::{parse_bool, select_field, ProviderError, ResolvedSecret};
 
-/// A resolved value plus optional provider version metadata.
-pub struct Resolved {
-    pub value: String,
-    pub version: Option<String>,
-}
+use crate::config::AwsConfig;
+use crate::error::map_sdk_error;
+use crate::payload::{secret_manager_id, ssm_parameter_name};
 
 /// Long-lived AWS clients, built once from the first request's config.
 pub struct AwsClients {
@@ -54,7 +50,7 @@ impl AwsClients {
     pub async fn resolve_secrets_manager(
         &self,
         reference: &Reference,
-    ) -> Result<Resolved, ProviderError> {
+    ) -> Result<ResolvedSecret, ProviderError> {
         let id = secret_manager_id(reference)?;
         let mut req = self.sm.get_secret_value().secret_id(id);
         if let Some(v) = reference.query.get("version_id") {
@@ -69,7 +65,7 @@ impl AwsClients {
 
         if let Some(s) = resp.secret_string() {
             let value = select_field(s, reference.fragment.as_deref())?;
-            return Ok(Resolved { value, version });
+            return Ok(ResolvedSecret { value, version });
         }
 
         if let Some(blob) = resp.secret_binary() {
@@ -85,7 +81,7 @@ impl AwsClients {
                 ));
             }
             let encoded = base64::engine::general_purpose::STANDARD.encode(blob.as_ref());
-            return Ok(Resolved {
+            return Ok(ResolvedSecret {
                 value: encoded,
                 version,
             });
@@ -95,7 +91,10 @@ impl AwsClients {
     }
 
     /// Resolve an `aws-ssm://` reference via `GetParameter`.
-    pub async fn resolve_ssm(&self, reference: &Reference) -> Result<Resolved, ProviderError> {
+    pub async fn resolve_ssm(
+        &self,
+        reference: &Reference,
+    ) -> Result<ResolvedSecret, ProviderError> {
         let name = ssm_parameter_name(reference)?;
 
         // Precedence for with_decryption: URI query > provider config > default true.
@@ -124,11 +123,11 @@ impl AwsClients {
         let version = Some(param.version().to_string());
 
         let value = select_field(raw, reference.fragment.as_deref())?;
-        Ok(Resolved { value, version })
+        Ok(ResolvedSecret { value, version })
     }
 
     /// Dispatch by scheme.
-    pub async fn resolve(&self, reference: &Reference) -> Result<Resolved, ProviderError> {
+    pub async fn resolve(&self, reference: &Reference) -> Result<ResolvedSecret, ProviderError> {
         match reference.scheme.as_str() {
             "aws-sm" => self.resolve_secrets_manager(reference).await,
             "aws-ssm" => self.resolve_ssm(reference).await,
