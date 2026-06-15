@@ -1,0 +1,15 @@
+# Installation manifest read by the dotenv-cloud core (spec §7.2).
+# Place this alongside the built executable under the provider directory, e.g.
+#   .dotenv-cloud/providers/aws/manifest.toml
+#   .dotenv-cloud/providers/aws/dotenv-cloud-provider-aws
+name = "dotenv-cloud-provider-aws"
+version = "0.1.0"
+protocol_version = "1"
+executable = "dotenv-cloud-provider-aws"
+schemes = ["aws-sm", "aws-ssm"]
+description = "AWS Secrets Manager and SSM Parameter Store provider for dotenv-cloud"
+
+[integrity]
+# Populated by the release pipeline.
+sha256 = ""
+signature = ""

@@ -1,0 +1,31 @@
+[package]
+name = "dotenv-cloud-provider-aws"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.82"
+description = "AWS Secrets Manager and SSM Parameter Store provider plugin for dotenv-cloud"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/geetchoubey/dotenv-cloud-provider-aws"
+
+[[bin]]
+name = "dotenv-cloud-provider-aws"
+path = "src/main.rs"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "io-util", "io-std"] }
+aws-config = { version = "1", features = ["behavior-version-latest"] }
+aws-sdk-secretsmanager = "1"
+aws-sdk-ssm = "1"
+aws-smithy-runtime-api = "1"
+aws-smithy-types = "1"
+base64 = "0.22"
+
+[dev-dependencies]
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true
