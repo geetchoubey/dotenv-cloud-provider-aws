@@ -10,7 +10,9 @@ mod error;
 mod payload;
 
 use dotenv_cloud_provider_sdk::protocol::{PluginInfo, Reference};
-use dotenv_cloud_provider_sdk::{serve, Provider, ProviderError, ResolvedSecret};
+use dotenv_cloud_provider_sdk::{
+    serve, ConfigField, FieldKind, Provider, ProviderError, ResolvedSecret,
+};
 use tokio::sync::OnceCell;
 
 use aws::AwsClients;
@@ -37,6 +39,43 @@ impl Provider for AwsProvider {
             version: env!("CARGO_PKG_VERSION").to_string(),
             schemes: vec!["aws-secrets".to_string(), "aws-ssm".to_string()],
         }
+    }
+
+    fn config_schema(&self) -> Vec<ConfigField> {
+        vec![
+            ConfigField {
+                key: "region".to_string(),
+                label: "AWS region".to_string(),
+                kind: FieldKind::String,
+                default: None,
+                required: false,
+                secret: false,
+            },
+            ConfigField {
+                key: "profile".to_string(),
+                label: "AWS named credentials profile".to_string(),
+                kind: FieldKind::String,
+                default: None,
+                required: false,
+                secret: false,
+            },
+            ConfigField {
+                key: "timeout_ms".to_string(),
+                label: "Per-request timeout in milliseconds".to_string(),
+                kind: FieldKind::Integer,
+                default: None,
+                required: false,
+                secret: false,
+            },
+            ConfigField {
+                key: "ssm.with_decryption".to_string(),
+                label: "Decrypt SSM SecureString parameters".to_string(),
+                kind: FieldKind::Bool,
+                default: Some("true".to_string()),
+                required: false,
+                secret: false,
+            },
+        ]
     }
 
     async fn resolve(
