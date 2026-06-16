@@ -673,9 +673,9 @@ dependencies = [
 
 [[package]]
 name = "dotenv-cloud-protocol"
-version = "0.1.0-beta.1"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3435de035f82b9557c046c5b1c3324b762ceb9bf4ba6707871c40117becc4ce5"
+checksum = "0448bbe715be3999d519f9f5df3684da75d3ec9cd842873cd3ea7ec873d1eb90"
 dependencies = [
  "serde",
  "serde_json",
@@ -683,7 +683,7 @@ dependencies = [
 
 [[package]]
 name = "dotenv-cloud-provider-aws"
-version = "0.1.0-beta.3"
+version = "0.1.0"
 dependencies = [
  "aws-config",
  "aws-sdk-secretsmanager",
@@ -699,9 +699,9 @@ dependencies = [
 
 [[package]]
 name = "dotenv-cloud-provider-sdk"
-version = "0.1.0-beta.1"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4078c4d6559304510d661a1399a1156aa51041d3be1b2f12723921e1c887b75b"
+checksum = "360a030f833b248f0c1c4c4b5b61c563f558cc5ad0d8435d75fca025aa713726"
 dependencies = [
  "dotenv-cloud-protocol",
  "serde_json",

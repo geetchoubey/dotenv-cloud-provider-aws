@@ -46,7 +46,7 @@ impl AwsClients {
         }
     }
 
-    /// Resolve an `aws-sm://` reference via `GetSecretValue`.
+    /// Resolve an `aws-secrets://` reference via `GetSecretValue`.
     pub async fn resolve_secrets_manager(
         &self,
         reference: &Reference,
@@ -129,7 +129,7 @@ impl AwsClients {
     /// Dispatch by scheme.
     pub async fn resolve(&self, reference: &Reference) -> Result<ResolvedSecret, ProviderError> {
         match reference.scheme.as_str() {
-            "aws-sm" => self.resolve_secrets_manager(reference).await,
+            "aws-secrets" => self.resolve_secrets_manager(reference).await,
             "aws-ssm" => self.resolve_ssm(reference).await,
             other => Err(ProviderError::invalid_reference(format!(
                 "unsupported scheme `{other}`"

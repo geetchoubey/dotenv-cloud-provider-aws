@@ -1,6 +1,6 @@
 //! dotenv-cloud AWS provider plugin.
 //!
-//! Resolves `aws-sm://` and `aws-ssm://` references via the AWS SDK. The
+//! Resolves `aws-secrets://` and `aws-ssm://` references via the AWS SDK. The
 //! `dotenv-cloud-provider-sdk` crate owns the stdin/stdout protocol runtime;
 //! this binary only implements [`Provider`].
 
@@ -35,7 +35,7 @@ impl Provider for AwsProvider {
         PluginInfo {
             name: env!("CARGO_PKG_NAME").to_string(),
             version: env!("CARGO_PKG_VERSION").to_string(),
-            schemes: vec!["aws-sm".to_string(), "aws-ssm".to_string()],
+            schemes: vec!["aws-secrets".to_string(), "aws-ssm".to_string()],
         }
     }
 

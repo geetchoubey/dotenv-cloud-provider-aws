@@ -6,7 +6,7 @@ Resolves remote secret references for two URI schemes:
 
 | Scheme | AWS API |
 | --- | --- |
-| `aws-sm://` | AWS Secrets Manager (`GetSecretValue`) |
+| `aws-secrets://` | AWS Secrets Manager (`GetSecretValue`) |
 | `aws-ssm://` | AWS SSM Parameter Store (`GetParameter`) |
 
 This is a standalone executable. The `dotenv-cloud` core launches it as a child
@@ -24,10 +24,10 @@ for the wire contract.
 AWS Secrets Manager:
 
 ```dotenv
-DB_PASSWORD=aws-sm://prod/db/password
-API_KEY=aws-sm://prod/app/config#api_key          # fragment selects a JSON field
-DB_PASSWORD=aws-sm://prod/db/password?version_id=abc
-DB_PASSWORD=aws-sm://prod/db/password?version_stage=AWSCURRENT
+DB_PASSWORD=aws-secrets://prod/db/password
+API_KEY=aws-secrets://prod/app/config#api_key          # fragment selects a JSON field
+DB_PASSWORD=aws-secrets://prod/db/password?version_id=abc
+DB_PASSWORD=aws-secrets://prod/db/password?version_stage=AWSCURRENT
 ```
 
 AWS SSM Parameter Store (parameter names are absolute paths, hence three slashes):

@@ -1,6 +1,6 @@
 [package]
 name = "dotenv-cloud-provider-aws"
-version = "0.1.0-beta.3"
+version = "0.1.0"
 edition = "2021"
 rust-version = "1.96"
 description = "AWS Secrets Manager and SSM Parameter Store provider plugin for dotenv-cloud"
@@ -12,8 +12,8 @@ name = "dotenv-cloud-provider-aws"
 path = "src/main.rs"
 
 [dependencies]
-dotenv-cloud-protocol = "0.1.0-beta.1"
-dotenv-cloud-provider-sdk = "0.1.0-beta.1"
+dotenv-cloud-protocol = "0.1.0"
+dotenv-cloud-provider-sdk = "0.1.0"
 serde_json = "1"
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "sync"] }
 aws-config = { version = "1", features = ["behavior-version-latest"] }

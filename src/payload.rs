@@ -5,7 +5,7 @@
 use dotenv_cloud_protocol::Reference;
 use dotenv_cloud_provider_sdk::ProviderError;
 
-/// Authority joined with path, e.g. `aws-sm://prod/db/password` -> `prod/db/password`.
+/// Authority joined with path, e.g. `aws-secrets://prod/db/password` -> `prod/db/password`.
 fn joined(reference: &Reference) -> String {
     match &reference.authority {
         Some(a) => format!("{a}{}", reference.path),
@@ -45,8 +45,8 @@ mod tests {
 
     fn reference(authority: Option<&str>, path: &str) -> Reference {
         Reference {
-            original: "aws-sm://...".into(),
-            scheme: "aws-sm".into(),
+            original: "aws-secrets://...".into(),
+            scheme: "aws-secrets".into(),
             authority: authority.map(String::from),
             path: path.to_string(),
             fragment: None,
